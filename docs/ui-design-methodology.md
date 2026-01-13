@@ -370,3 +370,15 @@ const statusColors = {
 Every interface represents the product. Every pixel matters. The bar for "done" is not "it works"—it's "it's excellent."
 
 When in doubt, delete and rebuild with intention.
+
+## Most Useful Summary ##
+Most Useful:
+shadcn (view_items_in_registries, get_item_examples_from_registries) — Got exact component implementations and usage patterns. No guessing at APIs.
+Exa (get_code_context_exa) — Found real-world premium B2B dashboard patterns. Showed how professionals solve the same problems.
+Browser tools (browser_navigate, browser_snapshot, browser_click) — Verified the actual rendered output. Caught issues that code review misses.
+Supporting Role:
+Tailwind (fetch_tailwindcss_documentation) — Confirmed v4 syntax and design token patterns.
+Context7 — Quick reference for @tanstack/react-table API.
+Not Useful This Session:
+Magic-21st — API key missing, couldn't access.
+Key Insight: The combination of shadcn (components) + Exa (patterns) + browser (verification) covers the full loop: know what to build → know how it should look → confirm it actually works.

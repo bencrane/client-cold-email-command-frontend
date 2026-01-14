@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export interface Lead {
   id: string;
@@ -26,9 +27,32 @@ interface LeadsTableProps {
   leads: Lead[];
   loading: boolean;
   error: string | null;
+  selectedIds: Set<string>;
+  onSelectionChange: (ids: Set<string>) => void;
 }
 
-export function LeadsTable({ leads, loading, error }: LeadsTableProps) {
+export function LeadsTable({ leads, loading, error, selectedIds, onSelectionChange }: LeadsTableProps) {
+  const allSelected = leads.length > 0 && leads.every((lead) => selectedIds.has(lead.id));
+  const someSelected = leads.some((lead) => selectedIds.has(lead.id));
+
+  const toggleAll = () => {
+    if (allSelected) {
+      onSelectionChange(new Set());
+    } else {
+      onSelectionChange(new Set(leads.map((lead) => lead.id)));
+    }
+  };
+
+  const toggleOne = (id: string) => {
+    const newSet = new Set(selectedIds);
+    if (newSet.has(id)) {
+      newSet.delete(id);
+    } else {
+      newSet.add(id);
+    }
+    onSelectionChange(newSet);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -69,6 +93,13 @@ export function LeadsTable({ leads, loading, error }: LeadsTableProps) {
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent border-border">
+            <TableHead className="w-[50px]">
+              <Checkbox
+                checked={allSelected ? true : someSelected ? "indeterminate" : false}
+                onCheckedChange={toggleAll}
+                aria-label="Select all"
+              />
+            </TableHead>
             <TableHead className="w-[200px] text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Name
             </TableHead>
@@ -90,8 +121,17 @@ export function LeadsTable({ leads, loading, error }: LeadsTableProps) {
           {leads.map((lead) => (
             <TableRow 
               key={lead.id} 
-              className="border-border hover:bg-muted/30 transition-colors"
+              className={`border-border hover:bg-muted/30 transition-colors ${
+                selectedIds.has(lead.id) ? "bg-primary/5" : ""
+              }`}
             >
+              <TableCell>
+                <Checkbox
+                  checked={selectedIds.has(lead.id)}
+                  onCheckedChange={() => toggleOne(lead.id)}
+                  aria-label={`Select ${lead.full_name || "lead"}`}
+                />
+              </TableCell>
               <TableCell className="font-medium text-foreground">
                 {lead.full_name || (
                   <span className="text-muted-foreground">—</span>

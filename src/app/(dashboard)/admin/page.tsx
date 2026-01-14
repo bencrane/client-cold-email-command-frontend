@@ -11,17 +11,17 @@ const cards = [
   {
     name: "Lead Lists",
     description: "Organize leads into targeted lists for campaigns",
-    href: null,
+    href: "/lead-lists",
   },
   {
     name: "Campaigns",
     description: "Create and manage outbound email campaigns",
-    href: null,
+    href: "/campaigns",
   },
   {
     name: "Master Inbox",
     description: "Unified inbox for all campaign responses",
-    href: null,
+    href: "/inbox",
   },
 ];
 

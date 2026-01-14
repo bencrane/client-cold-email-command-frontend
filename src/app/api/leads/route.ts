@@ -26,6 +26,7 @@ export async function GET(request: NextRequest) {
     const employeeRange = searchParams.get("employee_range");
     const country = searchParams.get("country");
     const title = searchParams.get("title");
+    const listId = searchParams.get("list_id");
     const limit = parseInt(searchParams.get("limit") || "50");
     const offset = parseInt(searchParams.get("offset") || "0");
 
@@ -68,12 +69,48 @@ export async function GET(request: NextRequest) {
       });
     }
 
+    // If filtering by list, get the lead IDs in that list first
+    let listLeadIds: string[] | null = null;
+    if (listId && listId !== "all") {
+      // Verify list belongs to org
+      const { data: list } = await customersDb
+        .schema("product")
+        .from("lead_lists")
+        .select("id")
+        .eq("id", listId)
+        .eq("org_id", organizationId)
+        .single();
+
+      if (!list) {
+        return NextResponse.json({ error: "List not found" }, { status: 404 });
+      }
+
+      // Get lead IDs in this list
+      const { data: members } = await customersDb
+        .schema("product")
+        .from("lead_list_members")
+        .select("lead_id")
+        .eq("lead_list_id", listId);
+
+      listLeadIds = members?.map((m) => m.lead_id) || [];
+
+      // If list is empty, return early
+      if (listLeadIds.length === 0) {
+        return NextResponse.json({ leads: [], total: 0 });
+      }
+    }
+
     // Build query
     let query = customersDb
       .schema("product")
       .from("org_leads")
       .select("*", { count: "exact" })
       .eq("org_id", organizationId);
+
+    // Filter by list membership if applicable
+    if (listLeadIds) {
+      query = query.in("id", listLeadIds);
+    }
 
     // Apply filters
     if (search) {

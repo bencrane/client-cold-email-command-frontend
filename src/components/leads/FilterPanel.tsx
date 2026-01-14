@@ -22,23 +22,61 @@ export interface Filters {
   title: string;
 }
 
+export interface LeadList {
+  id: string;
+  name: string;
+}
+
 interface FilterPanelProps {
   filters: Filters;
   onFilterChange: (key: keyof Filters, value: string) => void;
   onClearFilters: () => void;
+  selectedListId: string;
+  onListChange: (listId: string) => void;
+  leadLists?: LeadList[];
 }
 
 const INDUSTRIES = [
-  "Technology",
-  "Healthcare",
-  "Finance",
+  "Software Development",
+  "IT Services and IT Consulting",
+  "Technology, Information and Internet",
+  "Technology, Information and Media",
+  "Information Technology and Services",
+  "Financial Services",
+  "Insurance",
+  "Venture Capital and Private Equity Principals",
+  "Hospitals and Health Care",
+  "Mental Health Care",
+  "Biotechnology Research",
+  "Medical Equipment Manufacturing",
   "Manufacturing",
-  "Retail",
-  "Education",
+  "Automation Machinery Manufacturing",
+  "Semiconductor Manufacturing",
+  "Defense and Space Manufacturing",
+  "Aviation & Aerospace",
   "Real Estate",
-  "Media",
-  "Consulting",
-  "Other",
+  "Advertising Services",
+  "Market Research",
+  "Human Resources Services",
+  "Staffing and Recruiting",
+  "Professional Training and Coaching",
+  "E-Learning Providers",
+  "Education Administration Programs",
+  "Data Infrastructure and Analytics",
+  "Business Intelligence Platforms",
+  "Internet Marketplace Platforms",
+  "Social Networking Platforms",
+  "Online Audio and Video Media",
+  "Internet Publishing",
+  "Retail Apparel and Fashion",
+  "Food and Beverage Manufacturing",
+  "Food & Beverages",
+  "Wellness and Fitness Services",
+  "Consumer Services",
+  "Design Services",
+  "Robotics Engineering",
+  "Blockchain Services",
+  "Climate Data and Analytics",
 ];
 
 const EMPLOYEE_RANGES = [
@@ -69,12 +107,42 @@ export function FilterPanel({
   filters,
   onFilterChange,
   onClearFilters,
+  selectedListId,
+  onListChange,
+  leadLists = [],
 }: FilterPanelProps) {
   const activeFilterCount = Object.values(filters).filter((v) => v !== "").length;
   const hasActiveFilters = activeFilterCount > 0;
 
+  const hasLists = leadLists.length > 0;
+
   return (
     <div className="p-4">
+      {/* Lead List Selector */}
+      <div className="mb-5">
+        {hasLists ? (
+          <Select value={selectedListId} onValueChange={onListChange}>
+            <SelectTrigger className="w-full h-10 bg-sidebar-accent border-sidebar-border font-medium">
+              <SelectValue placeholder="All Leads" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Leads</SelectItem>
+              {leadLists.map((list) => (
+                <SelectItem key={list.id} value={list.id}>
+                  {list.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        ) : (
+          <div className="w-full h-10 px-3 flex items-center bg-sidebar-accent border border-sidebar-border rounded-md font-medium text-sm">
+            All Leads
+          </div>
+        )}
+      </div>
+
+      <Separator className="bg-sidebar-border mb-5" />
+
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2">

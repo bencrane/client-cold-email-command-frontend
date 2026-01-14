@@ -50,3 +50,42 @@ CREATE INDEX idx_org_leads_latest_start_date ON product.org_leads(latest_start_d
 
 -- Enable RLS
 ALTER TABLE product.org_leads ENABLE ROW LEVEL SECURITY;
+
+-- =============================================
+-- LEAD_LISTS
+-- User-created lists to organize leads
+-- =============================================
+CREATE TABLE product.lead_lists (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    org_id UUID NOT NULL REFERENCES public.organizations(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Indexes
+CREATE INDEX idx_lead_lists_org_id ON product.lead_lists(org_id);
+CREATE INDEX idx_lead_lists_created_at ON product.lead_lists(created_at);
+
+-- Enable RLS
+ALTER TABLE product.lead_lists ENABLE ROW LEVEL SECURITY;
+
+-- =============================================
+-- LEAD_LIST_MEMBERS
+-- Junction table linking leads to lists
+-- =============================================
+CREATE TABLE product.lead_list_members (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    lead_list_id UUID NOT NULL REFERENCES product.lead_lists(id) ON DELETE CASCADE,
+    lead_id UUID NOT NULL REFERENCES product.org_leads(id) ON DELETE CASCADE,
+    added_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    CONSTRAINT unique_list_member UNIQUE (lead_list_id, lead_id)
+);
+
+-- Indexes
+CREATE INDEX idx_lead_list_members_list_id ON product.lead_list_members(lead_list_id);
+CREATE INDEX idx_lead_list_members_lead_id ON product.lead_list_members(lead_id);
+
+-- Enable RLS
+ALTER TABLE product.lead_list_members ENABLE ROW LEVEL SECURITY;

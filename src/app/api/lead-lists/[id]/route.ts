@@ -30,7 +30,7 @@ export async function GET(
     .from('lead_lists')
     .select('*')
     .eq('id', id)
-    .eq('org_id', session.user.org_id)
+    .eq('org_id', 'placeholder-org-id')
     .single()
 
   if (listError || !list) {
@@ -56,7 +56,7 @@ export async function GET(
       .from('org_leads')
       .select('*')
       .in('id', leadIds)
-      .eq('org_id', session.user.org_id)
+      .eq('org_id', 'placeholder-org-id')
 
     if (!leadsError && leadsData) {
       leads = leadsData
@@ -78,8 +78,14 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await auth()
-  if (!session?.user?.org_id) {
+  // Dev bypass
+  if (process.env.NODE_ENV === 'development') {
+    const { id } = await params
+    return NextResponse.json({ dev: true, id, message: 'Auth bypassed in dev mode' })
+  }
+
+  const session = await auth.api.getSession({ headers: request.headers })
+  if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -96,7 +102,7 @@ export async function PATCH(
     .from('lead_lists')
     .update(updates)
     .eq('id', id)
-    .eq('org_id', session.user.org_id)
+    .eq('org_id', 'placeholder-org-id')
     .select()
     .single()
 
@@ -116,8 +122,14 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await auth()
-  if (!session?.user?.org_id) {
+  // Dev bypass
+  if (process.env.NODE_ENV === 'development') {
+    const { id } = await params
+    return NextResponse.json({ dev: true, id, message: 'Auth bypassed in dev mode' })
+  }
+
+  const session = await auth.api.getSession({ headers: request.headers })
+  if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -127,7 +139,7 @@ export async function DELETE(
     .from('lead_lists')
     .delete()
     .eq('id', id)
-    .eq('org_id', session.user.org_id)
+    .eq('org_id', 'placeholder-org-id')
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })

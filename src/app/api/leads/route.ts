@@ -15,6 +15,18 @@ const authDb = createClient(
 
 export async function GET(request: NextRequest) {
   try {
+    // Dev bypass
+    if (process.env.NODE_ENV === 'development') {
+      const devOrgId = process.env.DEV_ORG_ID || 'dev-org-id';
+      const { data: leads } = await customersDb
+        .schema('product')
+        .from('org_leads')
+        .select('*')
+        .eq('org_id', devOrgId)
+        .limit(50);
+      return NextResponse.json({ leads: leads || [], total: leads?.length || 0 });
+    }
+
     const searchParams = request.nextUrl.searchParams;
 
     // Check for impersonation email (for admin testing)

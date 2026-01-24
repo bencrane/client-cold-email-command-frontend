@@ -5,8 +5,8 @@ import { createClient } from '@supabase/supabase-js'
 import { auth } from '@/lib/auth'
 
 const supabase = createClient(
-  process.env.CUSTOMERS_DB_URL!,
-  process.env.CUSTOMERS_DB_SERVICE_KEY!
+  process.env.OUTBOUND_SOLUTIONS_DB_URL!,
+  process.env.OUTBOUND_SOLUTIONS_DB_SERVICE_KEY!
 )
 
 // Helper: verify list belongs to user's org
@@ -98,14 +98,14 @@ export async function GET(
 // POST /api/lead-lists/[id]/members - Add leads to list
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.org_id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { id } = params
+  const { id } = await params
   const body = await request.json()
   const { lead_ids } = body
 
@@ -165,14 +165,14 @@ export async function POST(
 // DELETE /api/lead-lists/[id]/members - Remove leads from list
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.org_id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { id } = params
+  const { id } = await params
   const body = await request.json()
   const { lead_ids } = body
 

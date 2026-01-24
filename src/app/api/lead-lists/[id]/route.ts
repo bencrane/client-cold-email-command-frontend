@@ -5,16 +5,17 @@ import { createClient } from '@supabase/supabase-js'
 import { auth } from '@/lib/auth'
 
 const supabase = createClient(
-  process.env.CUSTOMERS_DB_URL!,
-  process.env.CUSTOMERS_DB_SERVICE_KEY!
+  process.env.OUTBOUND_SOLUTIONS_DB_URL!,
+  process.env.OUTBOUND_SOLUTIONS_DB_SERVICE_KEY!
 )
 
 // GET /api/lead-lists/[id] - Get single list with members
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  return NextResponse.json({ route: '/api/lead-lists/[id]', id: params.id, status: 'ok' })
+  const { id } = await params
+  return NextResponse.json({ route: '/api/lead-lists/[id]', id, status: 'ok' })
 
   /*
   const session = await auth()
@@ -75,14 +76,14 @@ export async function GET(
 // PATCH /api/lead-lists/[id] - Update list name/description
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.org_id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { id } = params
+  const { id } = await params
   const body = await request.json()
   const { name, description } = body
 
@@ -113,14 +114,14 @@ export async function PATCH(
 // DELETE /api/lead-lists/[id] - Delete a list
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session?.user?.org_id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { id } = params
+  const { id } = await params
 
   const { error } = await supabase
     .from('lead_lists')

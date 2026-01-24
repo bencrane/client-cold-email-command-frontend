@@ -32,7 +32,7 @@ Built a Next.js frontend for **app.bullseyerevenue.com** - a B2B SaaS GTM intell
 | Database | URL Variable | Purpose |
 |----------|-------------|---------|
 | Auth DB | `AUTH_DB_URL` | User accounts, sessions |
-| Customers DB | `CUSTOMERS_DB_URL` | Organizations, leads |
+| Outbound Solutions DB | `OUTBOUND_SOLUTIONS_DB_URL` | Organizations, leads |
 | HQ DB | `HQ_DB_URL` | LinkedIn data, firmographics |
 
 **Schemas Created**:
@@ -43,7 +43,7 @@ Auth DB (guencekybjtvzaasyvhr.supabase.co)
 ├── public.session
 └── public.account
 
-Customers DB (kwzklhavhpnpdzdqknoz.supabase.co)
+Outbound Solutions DB (kwzklhavhpnpdzdqknoz.supabase.co)
 ├── public.organizations
 ├── public.subscriptions
 ├── client.flattened_customer_companies
@@ -187,10 +187,10 @@ HQ_DB_URL=https://ivcemmeywnlhykbuafwv.supabase.co
 HQ_DB_ANON_KEY=...
 HQ_DB_SERVICE_KEY=...
 
-# Customers DB
-CUSTOMERS_DB_URL=https://kwzklhavhpnpdzdqknoz.supabase.co
-CUSTOMERS_DB_ANON_KEY=...
-CUSTOMERS_DB_SERVICE_KEY=...
+# Outbound Solutions DB
+OUTBOUND_SOLUTIONS_DB_URL=https://kwzklhavhpnpdzdqknoz.supabase.co
+OUTBOUND_SOLUTIONS_DB_ANON_KEY=...
+OUTBOUND_SOLUTIONS_DB_SERVICE_KEY=...
 
 # Auth DB
 AUTH_DB_URL=https://guencekybjtvzaasyvhr.supabase.co

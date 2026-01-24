@@ -4,6 +4,11 @@ import { useRouter } from "next/navigation";
 
 const cards = [
   {
+    name: "Clients",
+    description: "Manage client organizations and email provisioning",
+    href: "/admin/clients",
+  },
+  {
     name: "All Leads",
     description: "View and manage all leads across your organization",
     href: "/all-leads",
@@ -22,6 +27,15 @@ const cards = [
     name: "Master Inbox",
     description: "Unified inbox for all campaign responses",
     href: "/inbox",
+  },
+  {
+    name: "Signal Feed",
+    description: "Real-time signals and engagement insights",
+    href: "/signals",
+  },
+  {
+    name: "LinkedIn HeyReach Setup",
+    description: "Connect LinkedIn accounts via HeyReach integration",
   },
 ];
 

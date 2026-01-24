@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const authDb = createClient(process.env.AUTH_DB_URL!, process.env.AUTH_DB_SERVICE_KEY!);
-const customersDb = createClient(process.env.CUSTOMERS_DB_URL!, process.env.CUSTOMERS_DB_SERVICE_KEY!);
+const customersDb = createClient(process.env.OUTBOUND_SOLUTIONS_DB_URL!, process.env.OUTBOUND_SOLUTIONS_DB_SERVICE_KEY!);
 
 async function check() {
   const { data: user } = await authDb

@@ -48,9 +48,9 @@ async function main() {
   console.log("=".repeat(40));
 
   const customersOk = await testConnection(
-    "Customers DB",
-    process.env.CUSTOMERS_DB_URL!,
-    process.env.CUSTOMERS_DB_ANON_KEY!
+    "Outbound Solutions DB",
+    process.env.OUTBOUND_SOLUTIONS_DB_URL!,
+    process.env.OUTBOUND_SOLUTIONS_DB_ANON_KEY!
   );
 
   const authOk = await testConnection(
@@ -61,7 +61,7 @@ async function main() {
 
   console.log("\n" + "=".repeat(40));
   console.log("Summary:");
-  console.log(`  Customers DB: ${customersOk ? "✅" : "❌"}`);
+  console.log(`  Outbound Solutions DB: ${customersOk ? "✅" : "❌"}`);
   console.log(`  Auth DB: ${authOk ? "✅" : "❌"}`);
 }
 

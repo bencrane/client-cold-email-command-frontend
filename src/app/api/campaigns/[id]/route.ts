@@ -6,8 +6,8 @@ import { headers } from 'next/headers'
 import { auth } from '@/lib/auth'
 
 const customersDb = createClient(
-  process.env.CUSTOMERS_DB_URL!,
-  process.env.CUSTOMERS_DB_SERVICE_KEY!
+  process.env.OUTBOUND_SOLUTIONS_DB_URL!,
+  process.env.OUTBOUND_SOLUTIONS_DB_SERVICE_KEY!
 )
 
 const authDb = createClient(

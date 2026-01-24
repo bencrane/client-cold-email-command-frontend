@@ -38,8 +38,8 @@ const { data } = await customersDb.from('flattened_customer_companies').select('
 
 | Database | Schema | Tables |
 |----------|--------|--------|
-| Customers DB | `public` | organizations, subscriptions, subscription_events |
-| Customers DB | `client` | flattened_customer_companies |
+| Outbound Solutions DB | `public` | organizations, subscriptions, subscription_events |
+| Outbound Solutions DB | `client` | flattened_customer_companies |
 | Auth DB | `public` | user, session, account, verification, users, roles, permissions, etc. |
 
 ---
@@ -66,8 +66,8 @@ const { data } = await customersDb.from('flattened_customer_companies').select('
 4. **Set environment variables** for the function:
    ```bash
    supabase secrets set INGEST_API_KEY=your-secret-api-key
-   supabase secrets set CUSTOMERS_DB_URL=https://kwzklhavhpnpdzdqknoz.supabase.co
-   supabase secrets set CUSTOMERS_DB_SERVICE_KEY=your-service-key
+   supabase secrets set OUTBOUND_SOLUTIONS_DB_URL=https://kwzklhavhpnpdzdqknoz.supabase.co
+   supabase secrets set OUTBOUND_SOLUTIONS_DB_SERVICE_KEY=your-service-key
    ```
 
 5. **Deploy the function**:

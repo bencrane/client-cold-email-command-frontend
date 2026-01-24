@@ -48,8 +48,8 @@ serve(async (req: Request) => {
     }
 
     // Initialize Supabase client
-    const supabaseUrl = Deno.env.get("CUSTOMERS_DB_URL")!;
-    const supabaseKey = Deno.env.get("CUSTOMERS_DB_SERVICE_KEY")!;
+    const supabaseUrl = Deno.env.get("OUTBOUND_SOLUTIONS_DB_URL")!;
+    const supabaseKey = Deno.env.get("OUTBOUND_SOLUTIONS_DB_SERVICE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Validate org_id exists

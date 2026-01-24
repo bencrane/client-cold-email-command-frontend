@@ -3,8 +3,8 @@ import { auth } from "@/lib/auth";
 import { createClient } from "@supabase/supabase-js";
 
 const customersDb = createClient(
-  process.env.CUSTOMERS_DB_URL!,
-  process.env.CUSTOMERS_DB_SERVICE_KEY!
+  process.env.OUTBOUND_SOLUTIONS_DB_URL!,
+  process.env.OUTBOUND_SOLUTIONS_DB_SERVICE_KEY!
 );
 
 const authDb = createClient(

@@ -19,13 +19,13 @@ There are **three separate Supabase projects**:
 | Database | Purpose | Env Prefix |
 |----------|---------|------------|
 | **Auth DB** | User authentication, sessions | `AUTH_DB_*`, `AUTH_DATABASE_URL` |
-| **Customers DB** | Organizations, subscriptions, leads | `CUSTOMERS_DB_*` |
+| **Outbound Solutions DB** | Organizations, subscriptions, leads | `OUTBOUND_SOLUTIONS_DB_*` |
 | **HQ DB** | LinkedIn data, firmographics, staging views | `HQ_DB_*` |
 
 ### Key Tables
 
 - `Auth DB`: `user`, `session`, `account` (managed by better-auth)
-- `Customers DB`: `organizations`, `subscriptions`, `client.flattened_customer_companies`, `product.org_leads`
+- `Outbound Solutions DB`: `organizations`, `subscriptions`, `client.flattened_customer_companies`, `product.org_leads`
 - `HQ DB`: `extracted.person_profile`, `extracted.person_experience`, `extracted.company_firmographics`, `staging.complete_leads_for_projection`
 
 ## Project Structure
@@ -104,7 +104,7 @@ const { data } = await supabase
 ## API Conventions
 
 - All API routes in `src/app/api/`
-- Use `CUSTOMERS_DB_*` credentials for org/leads data
+- Use `OUTBOUND_SOLUTIONS_DB_*` credentials for org/leads data
 - Use `AUTH_DB_*` credentials for user data
 - Support impersonation via `?email=` query param for admin testing
 

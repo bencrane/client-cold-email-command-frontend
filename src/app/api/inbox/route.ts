@@ -14,6 +14,16 @@ const authDb = createClient(
 
 // GET /api/inbox - fetch inbox messages for user's org
 export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+
+  // Dev bypass for local development
+  if (process.env.NODE_ENV === "development") {
+    const devOrgId = process.env.DEV_ORG_ID;
+    if (devOrgId) {
+      return handleGetMessages(searchParams, devOrgId);
+    }
+  }
+
   const session = await auth.api.getSession({ headers: request.headers });
   console.log("1. Session user id:", session?.user?.id);
 
@@ -34,7 +44,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "No organization found" }, { status: 401 });
   }
 
-  const { searchParams } = new URL(request.url);
+  return handleGetMessages(searchParams, user.organizationId);
+}
+
+async function handleGetMessages(searchParams: URLSearchParams, organizationId: string) {
   const status = searchParams.get("status"); // unread, read
   const category = searchParams.get("category"); // interested, bounced, etc.
   const direction = searchParams.get("direction"); // inbound, outbound
@@ -48,7 +61,7 @@ export async function GET(request: Request) {
     .schema("product")
     .from("inbox_messages")
     .select("*")
-    .eq("org_id", user.organizationId)
+    .eq("org_id", organizationId)
     .order("received_at", { ascending: false })
     .range(offset, offset + limit - 1);
 
